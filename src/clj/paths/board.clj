@@ -24,17 +24,15 @@
   ([pose]
    (neighbor (:position pose) (:orientation pose))))
 
-(defn mapm [f m]
-  (zipmap (keys m) (map f (vals m))))
-
 (defn invert [m]
   (reduce (fn [m [k v]] (update m v #(set (conj % k)))) {} m))
 
-(defn next-players [players]
-  (mapm #(merge % {:position (neighbor %)}) players))
+(defn next-positions [positions orientations]
+  (into {} (map (fn [[name position]]
+                  [name (neighbor position (orientations name))]) positions)))
 
-(defn next-board [board next-players]
-  (let [players-by-position (invert (mapm :position next-players))]
+(defn next-board [board next-positions]
+  (let [players-by-position (invert next-positions)]
     (map-board (fn [cell position]
                  (update cell :trails set/union (get players-by-position position))) board)))
 

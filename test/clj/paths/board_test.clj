@@ -22,22 +22,19 @@
   (is (= (neighbor {:x 1 :y 1} :down-right) {:x 2 :y 2}))
   (is (= (neighbor {:x 1 :y 1} :down-left) {:x 0 :y 2})))
 
-(deftest mapm-test
-  (is (= (mapm inc {:a 0 :b 1}) {:a 1 :b 2})))
-
 (deftest invert-test
   (is (= (invert {:a 1 :b 1 :c 2}) {1 #{:a :b} 2 #{:c}})))
 
-(deftest next-players-test
-  (is (= (next-players {:p1 {:position {:x 1 :y 1} :orientation :right}})
-         {:p1 {:position {:x 2 :y 1} :orientation :right}})))
+(deftest next-positions-test
+  (is (= (next-positions {:p1 {:x 1 :y 1}} {:p1 :right})
+         {:p1 {:x 2 :y 1}})))
 
 (deftest next-board-test
   (is (= (next-board
            [[{:trails #{:a}} {:trails #{}}]
             [{:trails #{:a}} {:trails #{:b}}]]
-           {:a {:position {:x 1 :y 0}}
-            :b {:position {:x 1 :y 0}}})
+           {:a {:x 1 :y 0}
+            :b {:x 1 :y 0}})
          [[{:trails #{:a}} {:trails #{:a :b}}]
           [{:trails #{:a}} {:trails #{:b}}]])))
 
